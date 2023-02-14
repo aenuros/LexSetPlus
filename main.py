@@ -7,49 +7,46 @@ from nltk.tokenize import word_tokenize, sent_tokenize, WhitespaceTokenizer
 
 arpabet = nltk.corpus.cmudict.dict()
 
-text2 = '''Well, since my baby left me
-Well, I found a new place to dwell
-Well, it's down at the end of Lonely Street
-At Heartbreak Hotel
-
-Where I'll be, I'll be so lonely baby
-Well, I'm so lonely
-I'll be so lonely, I could die
-
-Although it's always crowded
-You still can find some room
-For broken-hearted lovers
-To cry there in their gloom
-
-They'll be so, they'll be so lonely baby
-They get so lonely
-They're so lonely, they could die
-
-Now, the bell hop's tears keep flowin'
-And the desk clerk's dressed in black
-Well, they've been so long on Lonely Street
-They'll never, never look back
-
-And they get so, they get so lonely baby
-Well they are so lonely
-They're so lonely, they could die
-
-Well, now, if your baby leaves you
-And you got a tale to tell
-Well, just take a walk down Lonely Street
-To Heartbreak Hotel
-
-Where you will be, you will be so lonely baby
-Well you will be lonely
-You'll be so lonely, you could die
-
-Although it's always crowded
-But you still can find some room
-For broken-hearted lovers to cry there in their gloom
-
-Where they get so, they get so lonely baby
-Well they're so lonely
-They'll be so lonely, they could die
+text2 = '''Hey!  Life, look at me, I can see the reality,
+'Cause when you shook me, took me outta my world, I woke up.
+Suddenly I just woke up to The Happening.
+When you find that you left the future behind.
+'Cause when you got a tender love you don't take care of, 
+then you better beware of,
+ 
+The Happening.
+One day you're up, when you turn around,
+You find your world is tumbling down.
+It happened to me and it can happen to you.
+ 
+I was sure, I felt secure until love took a detour.
+Yeah!  Riding high on top of the world, it happened.
+Suddenly it just happened, 
+I saw my dreams torn apart 
+when love walked away from my heart.
+And when you lose a precious love you need to guide you 
+something happens inside you,
+ 
+The Happening.
+Now I see life for what it is.
+It's not of dreams, it's not of bliss.
+It happened to me and it can happen to you
+And then it happened.
+Oo, and then it happened.
+Oo, and then it happened.
+ 
+Is it real?  Is it fake?
+Is this game of life a mistake?
+'Cause when I lost the love I thought was mine for certain,
+Suddenly it starts hurting.
+I saw the light too late when that fickle finger of fate.
+Yeah!  It came and broke my pretty balloon,
+I woke up, suddenly I just woke up, so sure,
+I felt secure until love took a detour.
+'Cause when you got a tender love you don't take care of,
+then you better beware of,
+The Happening.
+The Happening.
 '''
 
 
@@ -60,7 +57,7 @@ def countLexicalSet(lexicalSet, myText, printWord):
   phonemeCount = 0
   sentenceCount = 0
   # remove all punctuation
-  cleanedText = re.sub("[,()?!]","",myText)
+  cleanedText = re.sub("[,()?!]","", myText)
   for sentence in cleanedText.splitlines():
     sentenceCount += 1
     wordCount = 0
@@ -124,11 +121,7 @@ def createFullArpabetString(myText):
   return fullArpabetText
 
 
-
-
-
-
-countLexicalSet('AY', text2, False)
+# countLexicalSet('AY', text2, True)
 
 print("------------------")
 
@@ -139,3 +132,30 @@ print("------------------")
 # print(createFullArpabetString(text2))
 
 # TODO : convert full arpabet string back to an array?
+
+def addBrackets(lexicalSet, myText):
+  tk = WhitespaceTokenizer()
+  newSentenceList = []
+  # remove all punctuation
+  cleanedText = re.sub("[.,()?!\"]","", myText)
+  for sentence in cleanedText.splitlines():
+    wordCount = 0
+    # words = word_tokenize(sentence)
+    words = tk.tokenize(sentence)
+    wordList = []
+    for word in words:
+      wordToAppend = word
+      try:
+        arpWord = ' '.join(arpabet[word.lower()][0])
+        for lex in lexicalSet:
+          if lex in arpWord:
+            wordToAppend = "[" + word + "]"
+      except Exception as e:
+        print("^^^", e)
+      wordList.append(wordToAppend)
+    newSentence = " ".join(wordList)
+    newSentenceList.append(newSentence)
+  fullBracketText = "\n".join(newSentenceList)
+  return fullBracketText
+
+print(addBrackets(['AY','IY0'], text2))
